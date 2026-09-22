@@ -44,11 +44,22 @@ def generate_initial_platforms():
     # À chaque itération, vous devrez notamment déterminer une position
     # horizontale valide, choisir un type avec choose_platform_type(...),
     # ajouter la plateforme à PLATFORMS et calculer la hauteur de la suivante.
-    # Les probabilités à utiliser sont données dans le README.
+    # Les probabilités à utiliser sont données dans le README.=======================
 
-    return
-    # ===========================================================
-
+    for i in range(2,8):
+     
+    # 1. Calcul ou génération des coordonnées x et y
+     x = random.randint(0, SCREEN_WIDTH - PLATFORM_WIDTH)
+     y = SCREEN_HEIGHT - (i * MIN_PLATFORM_GAP)
+   
+    # 2. Choix aléatoire du type de plateforme
+     chosen_type = choose_platform_type(0.67,0.17,0.1)
+    
+    # 3. Création de la plateforme avec x, y et le type choisi
+     platform = create_platform(x, y, chosen_type)
+    
+    # 4. Ajout à la liste des plateformes
+     PLATFORMS.append(platform)
 
 def draw_window():
     """

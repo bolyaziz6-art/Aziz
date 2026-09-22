@@ -28,7 +28,7 @@ platform_images = {
 
 
 # ======================== PARTIE 2.1 ========================
-def create_platform(x, y, platform_type="green"):
+def create_platform(x, y, platform_type):
     """
     Crée et retourne un dictionnaire représentant une plateforme.
 
@@ -36,18 +36,25 @@ def create_platform(x, y, platform_type="green"):
     plateforme verte. Votre travail consiste à le généraliser afin qu'il
     représente aussi correctement les plateformes bleues, marron et à ressort.
     """
+   
 
     platform = {
-        "x": float(x),
-        "y": float(y),
-        "type": "green",                    # TODO
-        "image": platform_images["green"],  # TODO
+        "x": x,
+        "y": y,
+        "type": platform_type,                    # TODO
+        "image": platform_images[platform_type],  # TODO
         "vx": 0.0,                          # TODO
         "active": True,
         "width": PLATFORM_SIZE[0],
-        "height": PLATFORM_SIZE[1]           # TODO
-    }
+        "height": PLATFORM_SIZE[1] 
+    } 
 
+    if  platform_type == "blue":
+       platform["vx"] = MOVING_PLATFORM_SPEED
+    if platform_type == "spring":
+        platform["y"] += 10
+           # TODO
+    
     # TODO : Modifiez le dictionnaire ci-dessus pour qu'il dépende réellement
     # de l'argument platform_type.
     #
@@ -63,6 +70,7 @@ def create_platform(x, y, platform_type="green"):
 
 
 # ======================== PARTIE 2.2 ========================
+import random
 def choose_platform_type(green_probability, blue_probability, spring_probability):
     """
     Choisit aléatoirement un type de plateforme.
@@ -78,8 +86,20 @@ def choose_platform_type(green_probability, blue_probability, spring_probability
     #
     # Attention : les seuils utilisés avec random.random() doivent être
     # cumulatifs.
+    green_probability= 0.64
+    blue_probability=0.17
+    spring_probability=0.1
+    r = random.random()
+    if r < green_probability:
+        return "green"
+    elif r < blue_probability + green_probability:
+        return "blue"
+    elif r < spring_probability+ green_probability+blue_probability:
+        return "spring"
+    else :
+        return "brown"
+    
 
-    return "green"  # Valeur temporaire à remplacer
 
 # ===========================================================
 
