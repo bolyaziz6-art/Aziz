@@ -22,6 +22,8 @@ def apply_gravity():
     # TODO : Mettez à jour la vitesse verticale puis la position verticale
     # du Doodle à partir de GRAVITY.
 
+    doodle_dict["vel_y"] += GRAVITY
+    doodle_dict["y"] += doodle_dict["vel_y"]
     return
 
 # ===========================================================
@@ -34,16 +36,27 @@ def move_doodle():
     Implémente le passage fluide d'un côté de l'écran à l'autre (Screen Wrap).
     """
     keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        doodle_dict["direction"] = "left"
+        doodle_dict["image"] = doodle_left_img
+        doodle_dict["x"] -= DOODLE_SPEED
+        
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        doodle_dict["direction"] = "right"
+        doodle_dict["image"] = doodle_right_img
+        doodle_dict["x"] += DOODLE_SPEED
 
-    # TODO : Gérez les déplacements gauche/droite et mettez à jour
-    # simultanément la direction et l'image du Doodle.
-
-
+    
+    
 
     # TODO : Implémentez le Screen Wrap pour qu'une partie du Doodle puisse
     # sortir d'un côté avant de réapparaître de l'autre.
     # N'utilisez pas de dimensions numériques écrites directement.
+    if doodle_dict["x"] > SCREEN_WIDTH:
+        doodle_dict["x"] = - DOODLE_WIDTH
 
+    if doodle_dict["x"] + DOODLE_WIDTH < 0:
+            doodle_dict["x"] = SCREEN_WIDTH
 
 
     return
@@ -93,6 +106,25 @@ def check_platform_collisions():
     # - spring : SPRING_JUMP_VELOCITY ;
     # - brown : JUMP_VELOCITY puis désactivation de la plateforme ;
     # - green/blue : JUMP_VELOCITY.
+    doodle_rect = (doodle_dict["x"],doodle_dict["y"],DOODLE_WIDTH,DOODLE_HEIGHT)
+    for p in PLATFORMS:
+        plateform_rect = (p["x"], p["y"], p["width"], p["height"])
+        if doodle_dict["vel_y"] > 0 and p["active"]:
+            if rects_collide(plateform_rect,doodle_rect):
+                pied_doodle = doodle_dict["y"] + DOODLE_HEIGHT
+                pied_doodle_passe = pied_doodle - doodle_dict["vel_y"]
+                if pied_doodle_passe <= p["y"] + 14:
+                    if p["type"] == "spring":
+                        doodle_dict["vel_y"] = SPRING_JUMP_VELOCITY
+                    elif p["type"] == "brown":
+                        doodle_dict["vel_y"] = JUMP_VELOCITY
+                        p["active"] = False
+                    elif p["type"] == "green" or p["type"] == "blue":
+                        doodle_dict["vel_y"] = JUMP_VELOCITY
+                break
+                        
+
+
 
     return
 
