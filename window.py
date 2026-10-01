@@ -46,7 +46,7 @@ def generate_initial_platforms():
     # ajouter la plateforme à PLATFORMS et calculer la hauteur de la suivante.
     # Les probabilités à utiliser sont données dans le README.=======================
 
-    for i in range(2,8):
+    for i in range(2,300):
      
     # 1. Calcul ou génération des coordonnées x et y
      x = random.randint(0, SCREEN_WIDTH - PLATFORM_WIDTH)
